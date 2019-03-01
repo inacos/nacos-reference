@@ -1,0 +1,84 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "http://repo.springsource.org/plugins-release" }
+    }
+
+    dependencies {
+        //Provides additional optional and provided dependency configurations for Gradle along with Maven POM generation support
+        classpath("org.springframework.build.gradle:propdeps-plugin:0.0.7")
+        classpath("org.asciidoctor:asciidoctor-gradle-plugin:1.5.0")
+        classpath("org.xujin.gradleplugin:halo-reference-plugin:0.0.2-SNAPSHOT")
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+group 'org.xujin.nacos'
+version '1.0.0.RELEASE'
+
+sourceCompatibility = 1.8
+
+description = 'Nacos Framework'
+
+ext.frameworkProjects = subprojects.findAll { project -> project.name.startsWith('halo') }
+
+configure(rootProject) {
+    apply plugin: "org.asciidoctor.gradle.asciidoctor"
+    apply plugin: "docbook-reference"
+    apply plugin: 'build-dashboard'
+    apply plugin: 'maven'
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: xjMavenReleaseRepository) {
+                    authentication(userName: deploymentUsername, password: deploymentPassword)
+                }
+                snapshotRepository(url: xjMavenSnapshotRepository) {
+                    authentication(userName: deploymentUsername, password: deploymentPassword)
+                }
+            }
+
+        }
+    }
+
+    asciidoctor {
+        baseDir = project.file('src/asciidoc')
+        backend = 'docbook5'
+        options = [
+                eruby: 'erubis',
+                attributes: [
+                        doctype: 'book',
+                        'halo-version' : project.version,
+                        revnumber : project.version,
+                        docinfo : ""
+                ]
+        ]
+    }
+
+    reference {
+        sourceDir = asciidoctor.outputDir
+        pdfFilename = "nacos-reference.pdf"
+        expandPlaceholders = ""
+    }
+
+    afterEvaluate {
+        tasks.findAll { it.name.startsWith("reference") }.each{ it.dependsOn.add("asciidoctor") }
+    }
+
+    // don't publish the default jar for the root project
+    configurations.archives.artifacts.clear()
+    
+
+}
+
+
+
+
+
+
+

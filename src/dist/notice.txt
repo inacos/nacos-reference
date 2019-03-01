@@ -1,0 +1,3 @@
+Naocs Framework ${version}
+Copyright (c) 2018-${copyright} nacos.net, Inc.
+
