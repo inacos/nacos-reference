@@ -7,3 +7,11 @@ Nacos产品release note https://github.com/alibaba/nacos/releases [《Nacos rele
 :nacos-baseurl: http://nacos.net
 
 include::introduce.adoc[]
+
+include::nacos-config.adoc[]
+
+include::nacos-naming.adoc[]
+
+include::spring-cloud-nacos.adoc[]
+
+include::nacos-faq.adoc[]
