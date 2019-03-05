@@ -12,6 +12,9 @@ include::nacos-config.adoc[]
 
 include::nacos-naming.adoc[]
 
-include::spring-cloud-nacos.adoc[]
+include::spring-cloud-nacos-config.adoc[]
+
+include::spring-cloud-nacos-discovery.adoc[]
+
 
 include::nacos-faq.adoc[]
